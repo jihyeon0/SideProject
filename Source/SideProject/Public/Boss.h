@@ -6,24 +6,26 @@
 #include "GameFramework/Character.h"
 #include "Boss.generated.h"
 
+class UBlackboardComponent;
+class ABossAIController;
+
 UCLASS()
 class SIDEPROJECT_API ABoss : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ABoss();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	UPROPERTY()
+	ABossAIController* AIController;
+	
+	UPROPERTY()
+	UBlackboardComponent* BlackboardComponent;
 };
