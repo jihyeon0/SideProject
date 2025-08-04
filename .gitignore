@@ -4,6 +4,8 @@ DerivedDataCache/
 Intermediate/
 Saved/
 Content/
+!Content/Boss/
+!Content/Boss/**
 
 *.sln
 *.suo
