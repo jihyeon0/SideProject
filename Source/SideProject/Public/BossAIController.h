@@ -7,18 +7,10 @@
 #include "BossAIController.generated.h"
 
 
+struct FAIStimulus;
+class UTargetTrackingComponent;
 class UAISenseConfig_Sight;
 class UBehaviorTreeComponent;
-
-
-// AI 상태 열거형 정의
-UENUM(BlueprintType)
-enum class EAIState : uint8
-{
-	Idle,
-	Suspicious, //의심하는 상태 추가
-	Chasing
-};
 
 UCLASS()
 class SIDEPROJECT_API ABossAIController : public AAIController
@@ -50,10 +42,6 @@ public:
 	// 감지 이벤트 처리 함수
 	UFUNCTION()
 	void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
-
-	// 상태 변환 함수
-	UFUNCTION(BlueprintCallable, Category = "AI")
-	void UpdateAIState();
 	
 	// 거리 설정 변수 추가
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
@@ -63,14 +51,18 @@ public:
 	float LoseInterestRadius = 2000.0f;
 	
 protected:
+	virtual void OnPossess(APawn* InPawn) override;
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Component")
+	TObjectPtr<UTargetTrackingComponent> TrackingComponent;
+	
 private:
 	// 타겟 추적 중인지 여부
 	bool bIsChasing = false;
-	// 현재 상태 변수
-	EAIState CurrentState = EAIState::Idle;
+	
 	// 마지막으로 타겟을 본 위치 저장
 	FVector LastKnownLocation;
 };
