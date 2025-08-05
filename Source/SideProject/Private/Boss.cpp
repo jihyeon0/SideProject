@@ -3,13 +3,14 @@
 
 #include "Boss.h"
 
+#include "AIStateComponent.h"
 #include "BossAIController.h"
 
 ABoss::ABoss()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-
+	AIStateComponent = CreateDefaultSubobject<UAIStateComponent>(TEXT("AIStateComponent"));
 }
 
 void ABoss::BeginPlay()

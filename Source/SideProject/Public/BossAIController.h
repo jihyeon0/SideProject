@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "BossAIController.generated.h"
 
 
 struct FAIStimulus;
 class UTargetTrackingComponent;
-class UAISenseConfig_Sight;
-class UBehaviorTreeComponent;
 
 UCLASS()
 class SIDEPROJECT_API ABossAIController : public AAIController
@@ -34,9 +36,21 @@ public:
 	// 추적 거리 설정 1000유닌(10m)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	float ChaseRadius = 1000.0f;
+	
+	UPROPERTY(BlueprintReadWrite, Category = "AI", SaveGame)  // 실행중인 컴포넌트
+	UBehaviorTreeComponent* BehaviorTreeComponent;
 
+	UPROPERTY(BlueprintReadWrite, Category = "AI", SaveGame)
+	UBlackboardComponent* BlackboardComponent;
+	
+	UPROPERTY(EditAnywhere, Category = "AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI|Perception")
+	UAIPerceptionComponent* PerceptionComp;
+	
 	// 시야 감지 설정
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI|Perception")
 	UAISenseConfig_Sight* SightConfig;
 
 	// 감지 이벤트 처리 함수
@@ -51,8 +65,8 @@ public:
 	float LoseInterestRadius = 2000.0f;
 	
 protected:
-	virtual void OnPossess(APawn* InPawn) override;
 	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* InPawn) override;
 	virtual void Tick(float DeltaTime) override;
 
 
@@ -60,9 +74,8 @@ protected:
 	TObjectPtr<UTargetTrackingComponent> TrackingComponent;
 	
 private:
-	// 타겟 추적 중인지 여부
 	bool bIsChasing = false;
 	
-	// 마지막으로 타겟을 본 위치 저장
+	// 마지막으로 타겟을 본 위치
 	FVector LastKnownLocation;
 };

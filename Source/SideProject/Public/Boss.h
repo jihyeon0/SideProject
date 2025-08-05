@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Boss.generated.h"
 
+class UAIStateComponent;
 class UBlackboardComponent;
 class ABossAIController;
 
@@ -23,9 +24,14 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+
+protected:
 	UPROPERTY()
 	ABossAIController* AIController;
 	
 	UPROPERTY()
 	UBlackboardComponent* BlackboardComponent;
+
+	UPROPERTY()
+	UAIStateComponent* AIStateComponent;
 };

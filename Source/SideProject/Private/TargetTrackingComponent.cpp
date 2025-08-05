@@ -17,11 +17,11 @@ void UTargetTrackingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	FindPlayer();
-	if (IsValid(TargetActor))
-	{
-		GetDistanceToPlayer();
-	}
+	// FindPlayer();
+	// if (IsValid(TargetActor))
+	// {
+	// 	GetDistanceToPlayer();
+	// }
 }
 
 void UTargetTrackingComponent::LateInitialize(APawn* InPawn)
@@ -78,5 +78,8 @@ float UTargetTrackingComponent::GetDistanceToPlayer()
 
 void UTargetTrackingComponent::SetTarget(AActor* Target)
 {
-	
+	if (IsValid(Target))
+	{
+		TargetActor = Target;
+	}
 }
